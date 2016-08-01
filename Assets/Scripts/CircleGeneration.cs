@@ -1,14 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum MeshFace
-{
-	Front,
-	Back,
-	Both
-}
-
-public class CircleGeneration {
+public class CircleGeneration : MeshBuilderGeneration {
 
 	// How much vertices will be used on curves
 	public int curveVerticesNumber;
@@ -18,9 +11,9 @@ public class CircleGeneration {
 
 	public Vector2 frequency;
 
-	public MeshFace meshFace;
-
 	public Vector3 circleOrigin;
+
+	protected bool addOriginVertice = true;
 
 	public CircleGeneration()
 	{
@@ -30,7 +23,7 @@ public class CircleGeneration {
 	}
 
 	// Use this for initialization
-	public MeshBuilder AddToMeshBuilder (MeshBuilder meshBuilder = null) {
+	public override MeshBuilder AddToMeshBuilder (MeshBuilder meshBuilder = null) {
 	
 		if (meshBuilder == null)
 		{
@@ -41,7 +34,10 @@ public class CircleGeneration {
 		float radiusAmount;
 
 		int originIndex = meshBuilder.Vertices.Count;
-		meshBuilder.Vertices.Add(circleOrigin);
+
+		if (addOriginVertice) {
+			meshBuilder.Vertices.Add(circleOrigin);
+		}
 
 		for (int i = 0; i < curveVerticesNumber; i++)
 		{
@@ -58,19 +54,25 @@ public class CircleGeneration {
 
 			meshBuilder.Vertices.Add(point);
 
-			if (meshFace == MeshFace.Front || meshFace == MeshFace.Both) {
-				meshBuilder.AddTriangle(originIndex, 
-										originIndex + i + 1,
-										originIndex + (i + 1) % curveVerticesNumber + 1);
-			}
-			if(meshFace == MeshFace.Back || meshFace == MeshFace.Both){
-				meshBuilder.AddTriangle(originIndex, 
-										originIndex + (i + 1) % curveVerticesNumber + 1,
-										originIndex + i + 1);
-			}
+			AddTrianglesAtIndex(meshBuilder, originIndex, i);
+
 		}
 
 		return meshBuilder;
+	}
+
+	protected virtual void AddTrianglesAtIndex(MeshBuilder meshBuilder, int originIndex, int i)
+	{
+		if (meshFace == MeshFace.Front || meshFace == MeshFace.Both) {
+			meshBuilder.AddTriangle(originIndex, 
+									originIndex + i + 1,
+									originIndex + (i + 1) % curveVerticesNumber + 1);
+		}
+		if(meshFace == MeshFace.Back || meshFace == MeshFace.Both){
+			meshBuilder.AddTriangle(originIndex, 
+									originIndex + (i + 1) % curveVerticesNumber + 1,
+									originIndex + i + 1);
+		}
 	}
 	
 }

@@ -9,7 +9,9 @@ using UnityEditor;
 public class ProceduralRope : MonoBehaviour {
 
 	public int curveVerticesNumber = 50;
+	public int heightVerticesNumber = 3;
 	public float radius = 1f;
+	public float tunnelHeight = 3f;
 
 	// Use this for initialization
 	void Start () {
@@ -25,12 +27,14 @@ public class ProceduralRope : MonoBehaviour {
 	{
 		MeshBuilder meshBuilder = new MeshBuilder();
 
-		meshBuilder = new CircleGeneration()
+		meshBuilder = new TunnelGeneration()
 		{
 			curveVerticesNumber = curveVerticesNumber,
+			heightVerticesNumber = heightVerticesNumber,
 			radius = radius,
 			meshFace = MeshFace.Both,
-			circleOrigin = transform.position
+			tunnelHeight = tunnelHeight,
+			tunnelOrigin = transform.position
 		}
 		.AddToMeshBuilder(meshBuilder);
 
