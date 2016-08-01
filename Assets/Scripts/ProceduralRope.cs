@@ -11,7 +11,7 @@ public class ProceduralRope : MonoBehaviour {
 	public int curveVerticesNumber = 50;
 	public int heightVerticesNumber = 3;
 	public float radius = 1f;
-	public float tunnelHeight = 3f;
+	public float cylinderHeight = 3f;
 
 	// Use this for initialization
 	void Start () {
@@ -27,14 +27,14 @@ public class ProceduralRope : MonoBehaviour {
 	{
 		MeshBuilder meshBuilder = new MeshBuilder();
 
-		meshBuilder = new TunnelGeneration()
+		meshBuilder = new CylinderGeneration()
 		{
 			curveVerticesNumber = curveVerticesNumber,
 			heightVerticesNumber = heightVerticesNumber,
 			radius = radius,
 			meshFace = MeshFace.Both,
-			tunnelHeight = tunnelHeight,
-			tunnelOrigin = transform.position
+			cylinderHeight = cylinderHeight,
+			cylinderOrigin = transform.position
 		}
 		.AddToMeshBuilder(meshBuilder);
 
