@@ -108,17 +108,47 @@ public class MeshEditor : MonoBehaviour
 
     public int GetNumberOfTriangles()
     {
-        int greaterTriangle = 0;
+        return triangleData.Count;
+    }
 
-        for (int i = 0; i < vertexData.Count; i++)
+    public void LoadMesh()
+    {
+        MeshFilter filter = GetComponent<MeshFilter>();
+
+        if (filter == null) return;
+
+        Mesh mesh = filter.sharedMesh;
+
+        Vector3[] vertices = mesh.vertices;
+        Vector2[] uv = mesh.uv;
+
+        int[] triangles = mesh.triangles;
+
+        vertexData.Clear();
+
+        for (int i = 0; i < vertices.Length; i++)
         {
-            if (vertexData[i].triangleIndex > greaterTriangle)
+            vertexData.Add(new VertexData()
             {
-                greaterTriangle = vertexData[i].triangleIndex;
-            }
+                positionX = vertices[i].x,
+                positionY = vertices[i].y,
+                positionZ = vertices[i].z,
+                uValue = uv[i].x,
+                vValue = uv[i].y
+            });
         }
 
-        return greaterTriangle + 1;
+        triangleData.Clear();
+        for (int t = 0; t < triangles.Length/3; t++)
+        {
+            triangleData.Add(new TriangleData()
+            {
+                triangleIndex = t,
+                vertexId0 = triangles[3*t + 0],
+                vertexId1 = triangles[3*t + 1],
+                vertexId2 = triangles[3*t + 2]
+            });
+        }
     }
 
     public void GenerateMesh()
@@ -219,6 +249,11 @@ public class MeshEditorEditor : Editor {
         meshEditor = target as MeshEditor;
 
         if (meshEditor == null) return;
+
+        if (GUILayout.Button("Load mesh"))
+        {
+            meshEditor.LoadMesh();
+        }
 
         if (GUILayout.Button("Add vertex"))
         {
