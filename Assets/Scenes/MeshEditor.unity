@@ -205,12 +205,12 @@ MonoBehaviour:
     triangleOrder: 1
     isEditMode: 0
     isGoingToRemove: 0
-  - positionX: -4.062022
+  - positionX: -0.9643371
     positionY: 0
-    positionZ: 4.5225806
+    positionZ: 7.2666907
     triangleIndex: 0
     triangleOrder: 2
-    isEditMode: 0
+    isEditMode: 1
     isGoingToRemove: 0
   - positionX: 3.2670937
     positionY: 1.6061268

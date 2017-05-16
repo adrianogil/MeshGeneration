@@ -14,6 +14,9 @@ public class VertexData
     public float positionY;
     public float positionZ;
 
+    public float uValue;
+    public float vValue;
+
     public int triangleIndex;
     public int triangleOrder;
 
@@ -121,12 +124,14 @@ public class MeshEditor : MonoBehaviour
     public void GenerateMesh()
     {
         Vector3[] vertices = new Vector3[vertexData.Count];
+        Vector2[] uv = new Vector2[vertexData.Count];
         int numberOfTriangles = triangleData.Count * 3;
         int[] triangles = new int[numberOfTriangles];
 
         for (int i = 0; i < vertexData.Count; i++)
         {
             vertices[i] = vertexData[i].GetPosition();
+            uv[i] = new Vector2(vertexData[i].uValue, vertexData[i].vValue);
         }
 
         for (int t = 0; t < triangleData.Count; t++)
@@ -139,6 +144,7 @@ public class MeshEditor : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.uv = uv;
 
         MeshFilter filter = GetComponent<MeshFilter>();
         filter.mesh = mesh;
@@ -184,21 +190,25 @@ public class MeshEditorEditor : Editor {
                     triangleVertexData.Add(meshEditor.vertexData[i]);
                 }
             }
+        }
 
-            if (triangleVertexData.Count == 3) {
-                Handles.color = Color.gray;
+        for (int t = 0; t < meshEditor.triangleData.Count; t++)
+        {
+            Handles.color = Color.gray;
+            int index0, index1, index2;
+            Vector3 p0, p1, p2;
 
-                Vector3 p0, p1, p2;
+            index0 = meshEditor.triangleData[t].vertexId0;
+            index1 = meshEditor.triangleData[t].vertexId1;
+            index2 = meshEditor.triangleData[t].vertexId2;
 
-                p0 = handleTransform.TransformPoint(triangleVertexData[0].GetPosition());
-                p1 = handleTransform.TransformPoint(triangleVertexData[1].GetPosition());
-                p2 = handleTransform.TransformPoint(triangleVertexData[2].GetPosition());
+            p0 = handleTransform.TransformPoint(meshEditor.vertexData[index0].GetPosition());
+            p1 = handleTransform.TransformPoint(meshEditor.vertexData[index1].GetPosition());
+            p2 = handleTransform.TransformPoint(meshEditor.vertexData[index2].GetPosition());
 
-                Handles.DrawLine(p0, p1);
-                Handles.DrawLine(p1, p2);
-                Handles.DrawLine(p2, p0);
-            }
-
+            Handles.DrawLine(p0, p1);
+            Handles.DrawLine(p1, p2);
+            Handles.DrawLine(p2, p0);
         }
     }
 
@@ -320,6 +330,13 @@ public class MeshEditorEditor : Editor {
         vertexData.positionZ = EditorGUILayout.FloatField(GUIContent.none, vertexData.positionZ, GUILayout.Width(50));
         GUILayout.EndHorizontal();
 
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("UV", GUILayout.Width(40));
+        vertexData.uValue = EditorGUILayout.FloatField(GUIContent.none, vertexData.uValue, GUILayout.Width(50));
+        vertexData.vValue = EditorGUILayout.FloatField(GUIContent.none, vertexData.vValue, GUILayout.Width(50));
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.Space();
         EditorGUILayout.Space();
 
         return vertexData;
