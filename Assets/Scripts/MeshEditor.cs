@@ -176,6 +176,8 @@ public class MeshEditor : MonoBehaviour
         mesh.triangles = triangles;
         mesh.uv = uv;
 
+        mesh.RecalculateNormals();
+
         MeshFilter filter = GetComponent<MeshFilter>();
         filter.mesh = mesh;
 
