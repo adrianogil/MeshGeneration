@@ -1,0 +1,4 @@
+Base path: /Users/SIDIA/workspace/unity3d/just4learning/moi/MeshGeneration/Assets/Shaders
+Initialization error: Failed to read D3DCompiler DLL file
+
+Quitting shader compiler process

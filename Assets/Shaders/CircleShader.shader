@@ -4,6 +4,10 @@
 		_Radius("Radius", float) = 0.1
 		_CircleColor ("Circle Color", Color) = (1,1,1,1)
 		_BackgroundColor ("Background Color", Color) = (1,1,1,1)
+
+		_SnakeQuadSize("SnakeQuadSize", Vector) = (0,0,0,0)
+		_SnakeHeadCenter("SnakeHeadCenter", Vector) = (0,0,0,0)
+		_SnakeColor ("Snake Color", Color) = (1,1,1,1)
 	}
 	SubShader {
 		Pass {
@@ -16,9 +20,12 @@
 
 			float _Radius;
 			float2 _Center;
+			float2 _SnakeHeadCenter;
+			float2 _SnakeQuadSize;
 
-			half4 _CircleColor;
-			half4 _BackgroundColor;
+			float4 _CircleColor;
+			float4 _SnakeColor;
+			float4 _BackgroundColor;
 
 			struct vert_input
 			{
@@ -42,11 +49,21 @@
 				return o;
 			}
 
-			half4 frag(vert_output o) : COLOR
+			float4 frag(vert_output o) : COLOR
 			{
 				if (length(o.uv - _Center) < _Radius)
 				{
 					return _CircleColor;
+				}
+				else if (
+							(o.uv.y > (_SnakeHeadCenter.y - 0.5*_SnakeQuadSize.y) &&
+							 o.uv.y < (_SnakeHeadCenter.y + 0.5*_SnakeQuadSize.y)) &&
+
+					  (o.uv.x > (_SnakeHeadCenter.x - 0.5*_SnakeQuadSize.x) &&
+						 o.uv.x < (_SnakeHeadCenter.x + 0.5*_SnakeQuadSize.x))
+						 )
+				{
+					return _SnakeColor;
 				}
 
 				return _BackgroundColor;
