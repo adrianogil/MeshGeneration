@@ -18,6 +18,16 @@ public class MeshBuilder {
 
 	private List<int> m_Indices = new List<int>();
 
+	public int[] GetTriangles()
+	{
+		return m_Indices.ToArray();
+	}
+
+	public void ClearTriangles()
+	{
+		m_Indices.Clear();
+	}
+
 	public void AddTriangle(int index0, int index1, int index2)
 	{
 		m_Indices.Add (index0);
@@ -50,6 +60,43 @@ public class MeshBuilder {
 		mesh.RecalculateBounds ();
 
 		return mesh;
+	}
+
+	public MeshBuilder Join(MeshBuilder b)
+	{
+		return MeshBuilder.Join(this, b);
+	}
+
+	public static MeshBuilder Join(MeshBuilder b1, MeshBuilder b2)
+	{
+		MeshBuilder builder = new MeshBuilder();
+
+		builder.Vertices.AddRange(b1.Vertices);
+		builder.Vertices.AddRange(b2.Vertices);
+
+		builder.Normals.AddRange(b1.Normals);
+		builder.Normals.AddRange(b2.Normals);
+
+		builder.UVs.AddRange(b1.UVs);
+		builder.UVs.AddRange(b2.UVs);
+
+		builder.Tangents.AddRange(b1.Tangents);
+		builder.Tangents.AddRange(b2.Tangents);
+
+		int[] triangles1 = b1.GetTriangles();
+		int[] triangles2 = b2.GetTriangles();
+
+		for (int i = 0; i < triangles1.Length; i++)
+		{
+			builder.m_Indices.Add(triangles1[i]);
+		}
+
+		for (int i = 0; i < triangles2.Length; i++)
+		{
+			builder.m_Indices.Add(triangles2[i] + b1.Vertices.Count);
+		}
+
+		return builder;
 	}
 
 }
