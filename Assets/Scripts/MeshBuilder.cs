@@ -35,6 +35,20 @@ public class MeshBuilder {
 		m_Indices.Add (index2);
 	}
 
+	public MeshBuilder Translate(Vector3 v)
+	{
+		List<Vector3> newVertices = new List<Vector3>();
+
+		for (int i = 0; i < Vertices.Count; i++)
+		{
+			newVertices.Add(Vertices[i] + v);
+		}
+
+		m_Vertices = newVertices;
+
+		return this; // Fluid interface
+	}
+
 	public Mesh CreateMesh()
 	{
 		Mesh mesh = new Mesh ();

@@ -57,4 +57,46 @@ public class ExtrudeMesh : MonoBehaviour
         return extrudedMesh;
     }
 
+    public static MeshBuilder From(MeshBuilder baseMesh, Vector3 direction, int[] verticesToIgnore)
+    {
+        MeshBuilder extrudedMesh = new MeshBuilder();
+
+        List<Vector3> baseVertices = baseMesh.Vertices;
+
+        for (int i = 0; i < verticesToIgnore.Length; i++)
+        {
+            baseVertices.RemoveAt(verticesToIgnore[i]);
+        }
+
+        int[] triangles = baseMesh.GetTriangles();
+
+        for (int i = 0; i < baseVertices.Count; i++)
+        {
+            extrudedMesh.Vertices.Add(baseVertices[i]);
+        }
+
+        for (int i = 0; i < baseVertices.Count; i++)
+        {
+            extrudedMesh.Vertices.Add(baseVertices[i] + direction);
+        }
+
+        int v1, v2;
+
+        for (int i = 0; i < baseVertices.Count; i++)
+        {
+            v1 = i;
+            v2 = (i+1) % baseVertices.Count;
+
+            if (IsEdgeInTriangles(triangles, v1, v2))
+            {
+                extrudedMesh.AddTriangle(baseVertices.Count+v1, baseVertices.Count+v2, v1);
+                extrudedMesh.AddTriangle(baseVertices.Count+v2, v2, v1);
+                extrudedMesh.AddTriangle(baseVertices.Count+v1, v1, baseVertices.Count+v2);
+                extrudedMesh.AddTriangle(baseVertices.Count+v2, v1, v2);
+            }
+        }
+
+        return extrudedMesh;
+    }
+
 }

@@ -15,12 +15,18 @@ public class ProceduralChest : MonoBehaviour {
 	public void Generate () {
 
         MeshBuilder baseMesh1 = new MeshBuilder();
-        QuadMesh.Create(baseMesh1, Vector3.right * baseSize.x, Vector3.forward * baseSize.y);
+        QuadMesh.Create(baseMesh1,
+            Vector3.right * baseSize.x,
+            Vector3.forward * baseSize.y);
 
         baseMesh1 = ExtrudeMesh.From(baseMesh1, Vector3.up * height1).Join(baseMesh1);
 
-        MeshBuilder circleMesh = CircleMesh.Create(height2*2, 0f, 180f);
-        // circleMesh = ExtrudeMesh.From(circleMesh, Vector3.right * baseSize.x).Join(circleMesh);
+        MeshBuilder circleMesh = CircleMesh.Create(height2, 0f, 180f,
+            -Vector3.forward,
+            Vector3.up).
+            Translate(Vector3.up * height1 + Vector3.forward * 0.5f * baseSize.y);
+
+        circleMesh = ExtrudeMesh.From(circleMesh, Vector3.right * baseSize.x).Join(circleMesh);
 
         MeshFilter filter = gameObject.GetComponent< MeshFilter >();
         Mesh mesh = MeshBuilder.Join(baseMesh1, circleMesh).CreateMesh();
