@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44423673, g: 0.49367994, b: 0.57306355, a: 1}
+  m_IndirectSpecularColor: {r: 0.44423652, g: 0.49368, b: 0.57306355, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -173,7 +173,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 123.45, y: 91.40099, z: 150.169}
---- !u!43 &1033544140
+--- !u!43 &1272539102
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -186,7 +186,7 @@ Mesh:
     indexCount: 12
     topology: 0
     firstVertex: 0
-    vertexCount: 4
+    vertexCount: 3
     localAABB:
       m_Center: {x: 0, y: 0.5, z: 0}
       m_Extent: {x: 1, y: 0.5, z: 0}
@@ -202,7 +202,7 @@ Mesh:
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
-  m_IndexBuffer: 020001000000010002000000030002000100000000000000
+  m_IndexBuffer: 010002000000020001000000000000000000000000000000
   m_Skin: []
   m_VertexData:
     m_CurrentChannels: 11
@@ -241,7 +241,7 @@ Mesh:
       format: 0
       dimension: 0
     m_DataSize: 128
-    _typelessdata: 000080bf00000000000000000000000000000000000000000000000000000000000080bf0000803f000000000000000000000000000080bf000000000000803f0000803f00000000000000000000000000000000000080bf0000803f000000000000803f0000803f000000000000000000000000000080bf0000803f0000803f
+    _typelessdata: 000080bf00000000000000000000000000000000000000000000000000000000000080bf0000803f00000000000000000000000000000000000000000000803f0000803f00000000000000000000000000000000000000000000803f000000000000803f0000803f000000000000000000000000000000000000803f0000803f
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -346,8 +346,8 @@ MonoBehaviour:
     positionZ: 0
     uValue: 0
     vValue: 1
-    triangleIndex: 2
-    triangleOrder: 2
+    triangleIndex: 1
+    triangleOrder: 1
     isEditMode: 0
     isGoingToRemove: 0
   - positionX: 1
@@ -355,8 +355,8 @@ MonoBehaviour:
     positionZ: 0
     uValue: 1
     vValue: 0
-    triangleIndex: 2
-    triangleOrder: 1
+    triangleIndex: 1
+    triangleOrder: 0
     isEditMode: 0
     isGoingToRemove: 0
   - positionX: 1
@@ -370,17 +370,17 @@ MonoBehaviour:
     isGoingToRemove: 0
   triangleData:
   - triangleIndex: 0
-    vertexId0: 2
-    vertexId1: 1
-    vertexId2: 0
-  - triangleIndex: 1
     vertexId0: 1
     vertexId1: 2
     vertexId2: 0
+  - triangleIndex: 1
+    vertexId0: 2
+    vertexId1: 1
+    vertexId2: 0
   - triangleIndex: 2
-    vertexId0: 3
-    vertexId1: 2
-    vertexId2: 1
+    vertexId0: 0
+    vertexId1: 0
+    vertexId2: 0
   - triangleIndex: 3
     vertexId0: 0
     vertexId1: 0
@@ -391,7 +391,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1301439756}
-  m_Mesh: {fileID: 1033544140}
+  m_Mesh: {fileID: 1272539102}
 --- !u!23 &1301439759
 MeshRenderer:
   m_ObjectHideFlags: 0
