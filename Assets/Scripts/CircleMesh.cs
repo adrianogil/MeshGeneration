@@ -1,7 +1,17 @@
 using UnityEngine;
 
-public class CircleMesh : MonoBehaviour
+public class CircleMesh
 {
+    public float radius;
+    public Vector3 direction1;
+    public Vector3 direction2;
+    public int totalVertices = 20;
+
+    public MeshBuilder Create()
+    {
+        return CircleMesh.Create(radius, 0f, 360f, direction1, direction2, totalVertices);
+    }
+
     public static MeshBuilder Create(float radius, float angleStart, float angleEnd, int totalVertices = 20)
     {
         MeshBuilder builder = new MeshBuilder();
@@ -14,10 +24,10 @@ public class CircleMesh : MonoBehaviour
         {
             radiusAmount = i * anglesPerVertices + angleStart * (Mathf.PI/180f);
             Vector3 point = new Vector3(radius * Mathf.Cos(radiusAmount), 0f, radius * Mathf.Sin(radiusAmount));
-            builder.Vertices.Add(point);
+            builder.AddVertice(point);
         }
 
-        builder.Vertices.Add(Vector3.zero);
+        builder.AddVertice(Vector3.zero);
 
         int v1, v2;
 
@@ -45,10 +55,10 @@ public class CircleMesh : MonoBehaviour
         {
             radiusAmount = i * anglesPerVertices + angleStart * (Mathf.PI/180f);
             Vector3 point = radius * Mathf.Cos(radiusAmount) * d1 + radius * Mathf.Sin(radiusAmount) * d2;
-            builder.Vertices.Add(point);
+            builder.AddVertice(point, "border");
         }
 
-        builder.Vertices.Add(Vector3.zero);
+        builder.AddVertice(Vector3.zero);
 
         int v1, v2;
 

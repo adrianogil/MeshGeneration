@@ -18,6 +18,8 @@ public class MeshBuilder {
 
 	private List<int> m_Indices = new List<int>();
 
+	private Dictionary<string, List<Vector3> > vertDictionary = new Dictionary<string, List<Vector3> >();
+
 	public int[] GetTriangles()
 	{
 		return m_Indices.ToArray();
@@ -35,6 +37,27 @@ public class MeshBuilder {
 		m_Indices.Add (index2);
 	}
 
+	public void AddVertice(Vector3 vertice, string verticeCategory="default")
+	{
+		m_Vertices.Add(vertice);
+		
+		if (vertDictionary.ContainsKey(verticeCategory))
+		{
+			vertDictionary[verticeCategory].Add(vertice);
+		} else {
+			vertDictionary.Add(verticeCategory, new List<Vector3>());
+			vertDictionary[verticeCategory].Add(vertice);
+		}
+	}
+
+	public List<Vector3> GetVertices(string verticeCategory)
+	{
+		if (!vertDictionary.ContainsKey(verticeCategory))
+			vertDictionary.Add(verticeCategory, new List<Vector3>());
+			
+		return vertDictionary[verticeCategory];
+	}
+
 	public MeshBuilder Translate(Vector3 v)
 	{
 		List<Vector3> newVertices = new List<Vector3>();
@@ -45,6 +68,21 @@ public class MeshBuilder {
 		}
 
 		m_Vertices = newVertices;
+
+		Dictionary<string, List<Vector3> > newVertDictionary = new Dictionary<string, List<Vector3> >();
+		foreach (var pair in vertDictionary)
+        {
+            if (pair.Value != null)
+            {
+            	newVertices = new List<Vector3>();
+            	for (int i = 0; i < pair.Value.Count; i++)
+            	{
+            		newVertices.Add(pair.Value[i] + v);
+            	}
+            	newVertDictionary.Add(pair.Key, newVertices);
+            }
+        }
+        vertDictionary = newVertDictionary;
 
 		return this; // Fluid interface
 	}
