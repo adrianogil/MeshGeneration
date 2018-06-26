@@ -9,13 +9,13 @@ public class MeshUnion
     {
         MeshBuilder meshBuilder = new MeshBuilder();
 
+        float segmentSize = size / totalSegments;
+
         if (mb1.GetVertices("border").Count == mb2.GetVertices("border").Count)
         {
             Debug.Log("GilLog - MeshUnion::Create - round " + round + " 1 ");
 
             int totalVertices = mb1.GetVertices("border").Count;
-
-            float segmentSize = size / totalSegments;
 
             Debug.Log("GilLog - MeshUnion::Create - mb1 " + mb1 + " mb2 " + mb2 + " round " + round + "  - totalVertices " + totalVertices + "  - segmentSize " + segmentSize + " ");
 
@@ -48,6 +48,62 @@ public class MeshUnion
                 }
 
                 meshBuilder.AddVertice(mb2.GetVertices("border")[i]);
+            }
+        } else {
+            MeshBuilder tmp = null;
+
+            if (mb1.GetVertices("border").Count > mb2.GetVertices("border").Count)
+            {
+                tmp = mb1;
+                mb1 = mb2;
+                mb2 = tmp;
+            }
+
+            int totalVertices1 = mb1.GetVertices("border").Count;
+            int totalVertices2 = mb2.GetVertices("border").Count;
+
+            int vertices2ForEachV1 = totalVertices2 / totalVertices1;
+
+            int currentVertice2 = 0;
+
+            int v1Index = 0;
+
+            for (int i = 0; i < totalVertices1; i++)
+            {
+                v1Index = meshBuilder.Vertices.Count;
+                meshBuilder.AddVertice(
+                            mb1.GetVertices("border")[i]
+                            );
+
+                for (int v2 = currentVertice2; (i == totalVertices1-1 && v2 < totalVertices2) || v2 < currentVertice2 + vertices2ForEachV1; v2++)
+                {
+                    Debug.Log("GilLog - MeshUnion::Create - mb1 " + mb1 + " mb2 " + mb2 + " round " + round + "  - v2 " + v2 + " ");
+                    Vector3 diffVector = (mb1.GetVertices("border")[i] - mb2.GetVertices("border")[v2]).normalized;
+
+                    for (int s = 0; s < totalSegments; s++)
+                    {
+                        if (s > 0)
+                        {
+                            meshBuilder.AddVertice(
+                                mb1.GetVertices("border")[i] + s * segmentSize * diffVector
+                            );
+                        }
+
+                        if (v2 < totalVertices2 - 1 || round)
+                        {
+                            int nextIndex = (v2 + 1) % totalVertices2;
+                            meshBuilder.AddTriangle(
+                                v1Index,
+                                v1Index + v2*totalSegments + s + 1,
+                                v1Index + v2*totalSegments + s + 2
+                                );
+                        }
+                    }
+
+                    meshBuilder.AddVertice(mb2.GetVertices("border")[v2]);
+                }
+
+                currentVertice2 = currentVertice2 + vertices2ForEachV1;
             }
         }
 

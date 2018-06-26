@@ -7,28 +7,17 @@ using UnityEditor;
 public class CastleGeneration : MeshGeneratorBehaviour
 {
 
-    public float height;
+    public float height, radius;
 
     protected override Mesh GenerateMesh()
     {
-        // CylinderGeneration cylinderGeneration = new CylinderGeneration();
-        // cylinderGeneration.cylinderHeight = 3f;
-        // cylinderGeneration.cylinderOrigin = Vector3.zero;
+        CastleTowerMesh tower = new CastleTowerMesh();
+        tower.height = height;
+        tower.radius = radius;
 
-        // MeshBuilder meshBuilder = new MeshBuilder();
+        MeshBuilder towerMeshBuilder =  tower.Create();
 
-        // cylinderGeneration.AddToMeshBuilder(meshBuilder);
-        
-        CylinderMesh cylinder = new CylinderMesh();
-        cylinder.radius = 0.8f;
-        cylinder.direction1 = new Vector3(1f, 0f, 0f);
-        cylinder.direction2 = new Vector3(0f, 0f, 1f);
-        cylinder.totalPerimeterVertices = 30;
-        cylinder.height = height;
-
-        MeshBuilder meshBuilder = cylinder.Create();
-
-        return meshBuilder.CreateMesh();
+        return towerMeshBuilder.CreateMesh();
     } 
     
 }
