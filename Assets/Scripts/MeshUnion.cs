@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MeshUnion
 {
-    public float size;
+    public float size = 1f;
     public int totalSegments = 1;
 
     public MeshBuilder Create(MeshBuilder mb1, MeshBuilder mb2, bool round = true)

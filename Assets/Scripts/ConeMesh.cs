@@ -7,6 +7,7 @@ public class ConeMesh
     public Vector3 direction2 = Vector3.right;
     public Vector3 direction3 = Vector3.up;
     public int totalPerimeterVertices = 20;
+    public int totalVerticalSegments = 1;
 
     public MeshBuilder Create()
     {
@@ -29,7 +30,7 @@ public class ConeMesh
 
         MeshUnion meshUnion = new MeshUnion();
         meshUnion.size = height;
-        meshUnion.totalSegments = 1;
+        meshUnion.totalSegments = totalVerticalSegments;
 
         MeshBuilder cone = meshUnion.Create(top, baseCircle);
 

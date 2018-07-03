@@ -27,6 +27,7 @@ public class CastleTowerMesh
         ConeMesh cone = new ConeMesh();
         cone.radius = 0.9f*radius;
         cone.height = 0.4f * height;
+        cone.totalVerticalSegments = 5;
         MeshBuilder coneMeshBuilder = cone.Create()
                     .Translate((height - 0.5f*cone.height) * Vector3.up);
 
