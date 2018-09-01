@@ -40,7 +40,7 @@ public class MeshBuilder {
 	public void AddVertice(Vector3 vertice, string verticeCategory="default")
 	{
 		m_Vertices.Add(vertice);
-		
+
 		if (vertDictionary.ContainsKey(verticeCategory))
 		{
 			vertDictionary[verticeCategory].Add(vertice);
@@ -54,7 +54,7 @@ public class MeshBuilder {
 	{
 		if (!vertDictionary.ContainsKey(verticeCategory))
 			vertDictionary.Add(verticeCategory, new List<Vector3>());
-			
+
 		return vertDictionary[verticeCategory];
 	}
 
@@ -123,10 +123,7 @@ public class MeshBuilder {
 		mesh.vertices = m_Vertices.ToArray ();
 		mesh.triangles = m_Indices.ToArray ();
 
-		// Normals sao opcionais
-		if (m_Normals.Count == m_Vertices.Count) {
-			mesh.normals = m_Normals.ToArray();
-		}
+
 
 		// UVs sao opcionais
 		if (m_UVs.Count == m_Vertices.Count) {
@@ -138,6 +135,13 @@ public class MeshBuilder {
 			mesh.tangents = m_Tangents.ToArray();
 		}
 
+
+		// Normals sao opcionais
+		if (m_Normals.Count == m_Vertices.Count) {
+			mesh.normals = m_Normals.ToArray();
+		} else {
+			mesh.RecalculateNormals ();
+		}
 		mesh.RecalculateBounds ();
 
 		return mesh;
