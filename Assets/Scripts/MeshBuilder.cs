@@ -152,7 +152,12 @@ public class MeshBuilder {
 		mesh.vertices = m_Vertices.ToArray ();
 		mesh.triangles = m_Indices.ToArray ();
 
-
+		// Normals sao opcionais
+		if (m_Normals.Count == m_Vertices.Count) {
+			mesh.normals = m_Normals.ToArray();
+		} else {
+			mesh.RecalculateNormals();			
+		}
 
 		// UVs sao opcionais
 		if (m_UVs.Count == m_Vertices.Count) {
