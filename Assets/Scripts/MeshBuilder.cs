@@ -58,6 +58,35 @@ public class MeshBuilder {
 		return vertDictionary[verticeCategory];
 	}
 
+	public MeshBuilder ScaleVertices(Vector3 v)
+	{
+		List<Vector3> newVertices = new List<Vector3>();
+
+		for (int i = 0; i < Vertices.Count; i++)
+		{
+			newVertices.Add(Vector3.Scale(Vertices[i],v));
+		}
+
+		m_Vertices = newVertices;
+
+		Dictionary<string, List<Vector3> > newVertDictionary = new Dictionary<string, List<Vector3> >();
+		foreach (var pair in vertDictionary)
+        {
+            if (pair.Value != null)
+            {
+            	newVertices = new List<Vector3>();
+            	for (int i = 0; i < pair.Value.Count; i++)
+            	{
+            		newVertices.Add(Vector3.Scale(pair.Value[i],v));
+            	}
+            	newVertDictionary.Add(pair.Key, newVertices);
+            }
+        }
+        vertDictionary = newVertDictionary;
+
+		return this; // Fluid interface
+	}
+
 	public MeshBuilder ScaleVertices(float v)
 	{
 		List<Vector3> newVertices = new List<Vector3>();
