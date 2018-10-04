@@ -13,11 +13,78 @@ public class PumpkinGeneration : MeshGeneratorBehaviour
 
     public Vector3 pumpkinScale;
 
+    public float minPumpkinFactor = 0.8f;
+    public float maxPumpkinFactor = 1f;
+
+    public float minPumpkinSectionFactor = 0.8f, maxPumpkinSectionFactor = 1.2f;
+    public int nPumpkinSections = 5;
     public int nbLong;
     public int nbLat;
 
+    protected int[] pumpkinSectionNb;
+    protected int[] pumpkinSectionSize;
+    protected int nbPumpkin;
+
+    protected void SetupPumpkinSections()
+    {
+        nbPumpkin = nbLong / nPumpkinSections;
+
+        pumpkinSectionNb = new int[nbLong+1];
+        pumpkinSectionSize = new int[nbLong+1];
+
+        int currentSectionNb = -1;
+        int currentSectionSize = -1;
+
+        for (int i = 0; i <= nbLong; i++)
+        {
+            if (currentSectionNb <= 0)
+            {
+                currentSectionSize = Random.Range((int) (minPumpkinSectionFactor*nbPumpkin),
+                                                    (int) (maxPumpkinSectionFactor*nbPumpkin));
+                if (currentSectionSize > nbLong - i)
+                {
+                    currentSectionSize = nbLong - i;
+                } else if (currentSectionSize > nbLong - i - nbPumpkin)
+                {
+                    currentSectionSize = (nbLong - i) / 2;
+                }
+                currentSectionNb = currentSectionSize;
+            }
+
+            pumpkinSectionSize[i] = currentSectionSize;
+            pumpkinSectionNb[i] = currentSectionSize - currentSectionNb;
+            currentSectionNb--;
+        }
+    }
+
+    protected float GetSectionRadiusFactor(int lat, int lon)
+    {
+        
+
+        // (lon % 7 == 0? 0.9f * radius : radius), 
+        // (lon % nbPumpkin == 0? minPumpkinFactor * radius : radius * (maxPumpkinFactor - 
+        //         ((maxPumpkinFactor - minPumpkinFactor)/(nbPumpkin/2)) * 
+        //             Mathf.Abs(lon % nbPumpkin - nbPumpkin/2))), 
+
+        // float radiusFactor = 
+        //     (lon % nbPumpkin == 0? minPumpkinFactor * radius : radius * (minPumpkinFactor + 
+        //         ((maxPumpkinFactor - minPumpkinFactor) * Mathf.Sin(0.1f + 0.49f * Mathf.PI *
+        //             (1f - Mathf.Abs(lon % nbPumpkin - (nbPumpkin/2)) * (1f/(nbPumpkin/2)))
+        //     ))));
+
+        float radiusFactor = 
+            (pumpkinSectionNb[lon] == 0? minPumpkinFactor * radius : radius * (minPumpkinFactor + 
+                ((maxPumpkinFactor - minPumpkinFactor) * Mathf.Sin(0.1f + 0.49f * Mathf.PI *
+                    (1f - Mathf.Abs(pumpkinSectionNb[lon] - (pumpkinSectionSize[lon]/2)) * (1f/(pumpkinSectionSize[lon]/2)))
+            ))));
+
+        return radiusFactor;
+    }
+
     protected override Mesh GenerateMesh()
     {
+        SetupPumpkinSections();
+
         MeshBuilder pumpkinMeshBuilder =  new MeshBuilder();
 
         #region Vertices
@@ -41,8 +108,8 @@ public class PumpkinGeneration : MeshGeneratorBehaviour
                 vertices[ lon + lat * (nbLong + 1) + 1] = 
 
                     Vector3.Scale(new Vector3( sin1 * cos2, cos1, sin1 * sin2 ) * 
-                            // (lon % 7 == 0? 0.9f * radius : radius), 
-                            (lon % 7 == 0? 0.8f * radius : radius * (1f - (0.2f/3f)*Mathf.Abs(lon % 7 - 3))), 
+                            GetSectionRadiusFactor(lat, lon)
+                        , 
                         // radius,
                          pumpkinScale);
             }
@@ -76,8 +143,8 @@ public class PumpkinGeneration : MeshGeneratorBehaviour
         for( int lon = 0; lon < nbLong; lon++ )
         {
             triangles[i++] = lon+2;
-            triangles[i++] = 0;
             triangles[i++] = lon+1;
+            triangles[i++] = 0;
         }
 
         //Middle
@@ -89,12 +156,12 @@ public class PumpkinGeneration : MeshGeneratorBehaviour
                 int next = current + nbLong + 1;
 
                 triangles[i++] = current;
-                triangles[i++] = next + 1;
                 triangles[i++] = current + 1;
+                triangles[i++] = next + 1;
 
                 triangles[i++] = current;
-                triangles[i++] = next;
                 triangles[i++] = next + 1;
+                triangles[i++] = next;
             }
         }
 
@@ -102,8 +169,8 @@ public class PumpkinGeneration : MeshGeneratorBehaviour
         for( int lon = 0; lon < nbLong; lon++ )
         {
             triangles[i++] = vertices.Length - 1;
-            triangles[i++] = vertices.Length - (lon+1) - 1;
             triangles[i++] = vertices.Length - (lon+2) - 1;
+            triangles[i++] = vertices.Length - (lon+1) - 1;
         }
         #endregion
 
