@@ -213,8 +213,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshCollider: {fileID: 346657758}
   clickedPoints: []
-  meshMaterial: {fileID: 0}
+  meshMaterial: {fileID: 2100000, guid: 83616ef4281ff42fb99c2d9ade3e0b12, type: 2}
   extrusionLevel: 0
+  editMesh: 0
+  meshFilter: {fileID: 0}
 --- !u!1 &819488252
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,8 +356,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1955388997}
-  m_LocalRotation: {x: -0.35711145, y: 0.6197816, z: -0.37557873, w: -0.5893072}
-  m_LocalPosition: {x: 4.446566, y: 7.1816807, z: 0.9199838}
+  m_LocalRotation: {x: -0.21531165, y: 0.2365984, z: -0.053854175, w: -0.9459185}
+  m_LocalPosition: {x: 4.9190636, y: 4.9232693, z: -8.8165245}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
