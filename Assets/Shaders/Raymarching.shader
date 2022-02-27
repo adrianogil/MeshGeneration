@@ -14,25 +14,15 @@ Shader "Raymarching/Test"
 			#pragma vertex vert
 			#pragma fragment frag
 
-			#include "UnityCG.cginc"
 			#include "Lighting.cginc"
+			#include "lambert.cginc"
+			#include "raymarching.cginc"
 			#include "sdf.cginc"
 
 			#define _Steps 10
 			#define _MinDistance 0.02
 
 			uniform float4 _Color;
-
-			fixed4 simpleLambert (fixed3 normal) {
-				fixed3 lightDir = _WorldSpaceLightPos0.xyz;	// Light direction
-				fixed3 lightCol = _LightColor0.rgb;		// Light color
-
-				fixed NdotL = max(dot(normal, lightDir),0);
-				fixed4 c;
-				c.rgb = _Color * lightCol * NdotL;
-				c.a = 1;
-				return c;
-			}
 
 			float map (float3 p)
 			{
@@ -57,38 +47,6 @@ Shader "Raymarching/Test"
 			 //    return d;
 			}
 
-			float3 normal (float3 p)
-			{
-				const float eps = 0.01;
-
-				return normalize
-				(	float3
-					(	map(p + float3(eps, 0, 0)	) - map(p - float3(eps, 0, 0)),
-						map(p + float3(0, eps, 0)	) - map(p - float3(0, eps, 0)),
-						map(p + float3(0, 0, eps)	) - map(p - float3(0, 0, eps))
-					)
-				);
-			}
-
-			fixed4 renderSurface(float3 p)
-			{
-				float3 n = normal(p);
-				return simpleLambert(n);
-			}
-
-			fixed4 raymarch (float3 position, float3 direction)
-			{
-				for (int i = 0; i < _Steps; i++)
-				{
-					float distance = map(position);
-					if (distance < _MinDistance)
-						return renderSurface(position);
-
-					position += distance * direction;
-				}
-				return fixed4(1,1,1,1);
-			}
-
 			struct v2f {
 				float4 pos : SV_POSITION;	// Clip space
 				float3 wPos : TEXCOORD1;	// World position
@@ -108,7 +66,8 @@ Shader "Raymarching/Test"
 			{
 				float3 worldPosition = i.wPos;
 				float3 viewDirection = normalize(i.wPos - _WorldSpaceCameraPos);
-				return raymarch (worldPosition, viewDirection);
+				//return raymarch (worldPosition, viewDirection, _Color);
+				RAYMARCH(worldPosition, viewDirection, _Color, map)
 			}
 
 			ENDCG
