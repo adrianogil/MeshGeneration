@@ -4,9 +4,10 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Eyes_Material
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Color_Material
   m_Shader: {fileID: 4800000, guid: f8f6ee9a2e7324401adb2b79ae429dff, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -83,3 +84,4 @@ Material:
     - _IrisColorA: {r: 0, g: 0.33793116, b: 1, a: 1}
     - _IrisColorB: {r: 0, g: 1, b: 1, a: 1}
     - _IrisPosition: {r: 0.5, g: 0.5, b: 0, a: 0}
+  m_BuildTextureStacks: []

@@ -389,28 +389,28 @@ public class MeshEditorEditor : Editor {
 
         Handles.Label(pos + 0.6f * size * Vector3.up, "" + index);
 
-        if (Handles.Button(pos, handleRotation, 1.2f * size * handleSize, 1.2f * size * pickSize, Handles.DotCap)) {
-            vertexData.isEditMode = true;
-            selectedVertexIndex = index;
-        }
+        // if (Handles.Button(pos, handleRotation, 1.2f * size * handleSize, 1.2f * size * pickSize, Handles.DotCap)) {
+        //     vertexData.isEditMode = true;
+        //     selectedVertexIndex = index;
+        // }
 
-        if (vertexData.isEditMode) {
-            EditorGUI.BeginChangeCheck();
+        // if (vertexData.isEditMode) {
+        //     EditorGUI.BeginChangeCheck();
 
-            pos = Handles.DoPositionHandle(pos, handleRotation);
+        //     pos = Handles.DoPositionHandle(pos, handleRotation);
 
-            pos = handleTransform.InverseTransformPoint(pos);
+        //     pos = handleTransform.InverseTransformPoint(pos);
 
-            vertexData.positionX = pos.x;
-            vertexData.positionY = pos.y;
-            vertexData.positionZ = pos.z;
+        //     vertexData.positionX = pos.x;
+        //     vertexData.positionY = pos.y;
+        //     vertexData.positionZ = pos.z;
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RecordObject(meshEditor, "Move vertex");
-                EditorUtility.SetDirty(meshEditor);
-            }
-        }
+        //     if (EditorGUI.EndChangeCheck())
+        //     {
+        //         Undo.RecordObject(meshEditor, "Move vertex");
+        //         EditorUtility.SetDirty(meshEditor);
+        //     }
+        // }
 
 
         return vertexData;
