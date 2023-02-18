@@ -20,6 +20,8 @@ public class MeshBuilder {
 
 	private Dictionary<string, List<Vector3> > vertDictionary = new Dictionary<string, List<Vector3> >();
 
+	private int numberOfTriangleMeshes = 0;
+
 	public int[] GetTriangles()
 	{
 		return m_Indices.ToArray();
@@ -35,6 +37,20 @@ public class MeshBuilder {
 		m_Indices.Add (index0);
 		m_Indices.Add (index1);
 		m_Indices.Add (index2);
+	}
+
+	public void AddTriangleMesh(Vector3 v1, Vector3 v2, Vector3 v3)
+	{
+		numberOfTriangleMeshes += 1;
+
+		var lastTotalVertices = m_Vertices.Count;
+
+		AddVertice(v1, verticeCategory:"Triangle" + numberOfTriangleMeshes);
+		AddVertice(v2, verticeCategory:"Triangle" + numberOfTriangleMeshes);
+		AddVertice(v3, verticeCategory:"Triangle" + numberOfTriangleMeshes);
+
+		AddTriangle(lastTotalVertices, lastTotalVertices+1, lastTotalVertices+2);
+
 	}
 
 	public void AddVertice(Vector3 vertice, string verticeCategory="default")
