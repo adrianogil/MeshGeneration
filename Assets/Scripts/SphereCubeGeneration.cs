@@ -6,6 +6,10 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// Generates a cube with UV similar to a Sphere
+/// Indicated to render a equirectangular image inside a cube
+/// </summary>
 public class SphereCubeGeneration : MonoBehaviour {
 
 	public void Generate()
